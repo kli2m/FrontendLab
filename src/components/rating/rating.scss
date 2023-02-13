@@ -1,0 +1,33 @@
+.rating {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+  &__stars {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  & .noscores {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #a7a7a7;
+  }
+  & .scores {
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    color: #363636;
+  }
+  .star {
+    stroke: #ffbc1f;
+    fill: #ffbc1f;
+  }
+  .nostar {
+    stroke: #ffbc1f;
+    fill: #fff;
+  }
+}

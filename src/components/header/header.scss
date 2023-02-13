@@ -1,0 +1,138 @@
+.header {
+  max-width: 100%;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &__logo-box{
+    display: flex;
+    width: 495px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  & .hamburger-menu {
+    display: none;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+    transition-duration: 0.5s;
+    width: 32px;
+    height: 32px;
+    &.open{
+      .menu__btn {
+        &:before,&:after  {background: linear-gradient(231.58deg, #F83600 -53.35%, #F9D423 297.76%);}
+      }
+    }
+    input {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      opacity: 0;
+      z-index: 2;
+      -webkit-touch-callout: none;
+    }
+
+    .menu__btn {
+      transition-duration: 0.5s;
+      position: absolute;
+      width: 26.67px;
+      height: 2.67px;
+      top: 15px;
+      left: 6px;
+      background-color: black;
+      &:before {
+        transition-duration: 0.5s;
+        position: absolute;
+        width: 26.67px;
+        height: 2.67px;
+        background-color: black;
+        content: '';
+        top: -8px;
+      }
+
+      &:after {
+        transition-duration: 0.5s;
+        position: absolute;
+        width: 26.67px;
+        height: 2.67px;
+        background-color: black;
+        content: '';
+        top: 8px;
+      }
+    }
+
+    input:checked ~ .menu__btn {
+      transition-duration: 0.5s;
+      background: transparent;
+
+      &:before {
+        width: 18.67px;
+
+        transform: rotateZ(45deg) scale(1.25) translate(5px, 4px);
+      }
+
+      &:after {
+        width: 18.67px;
+
+        transform: rotateZ(-45deg) scale(1.25) translate(5px, -4px);
+      }
+    }
+  }
+  &__title {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+  }
+  &__user-info {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 16px;
+    width: 300px;
+  }
+}
+
+@media only screen and (min-width: 321px) and (max-width: 768px) {
+  .header {
+    padding: 26px 0;
+    height: 96px;
+    img {
+      display: none;
+    }
+    & .hamburger-menu {
+      display: block;
+    }
+    &__title {
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 40px;
+      margin: 0 24px;
+
+    }
+    &__user-info {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .header {
+    height: 76px;
+    img {
+      display: none;
+    }
+    & .hamburger-menu {
+      display: block;
+    }
+    &__title {
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 28px;
+      margin: 0 26px;
+    }
+    &__user-info {
+      display: none;
+    }
+  }
+}

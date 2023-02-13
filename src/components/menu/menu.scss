@@ -1,0 +1,205 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 279px;
+  position: relative;
+  background: #fff;
+  &.menu-header-active{
+    display: none;
+  }
+  &__books {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 30px;
+    background: #fff;
+    &_title {
+      position: relative;
+      padding: 0px;
+      gap: 8px;
+      width: 255px;
+      height: 36px;
+      font-weight: 700;
+      font-size: 18px; 
+      line-height: 28px;
+      background: #fff;
+      border: none;
+      border-bottom: 1px solid #363636;
+      display: flex;
+      cursor: pointer;
+      &.active {
+        border-bottom: 1px solid #f8740e;
+      }
+      div {
+        position: absolute;
+        transform: rotate(225deg);
+        border-top: 2px solid #363636;
+        border-left: 2px solid #363636;
+        width: 8px;
+        height: 8px;
+        top: calc(50% - 8px);
+        right: 20px;
+        &.active {
+          border-top: 2px solid #f8740e;
+          border-left: 2px solid #f8740e;
+        }
+        &.visible {
+          transform: rotate(45deg);
+          top: calc(50% - 4px);
+        }
+      }
+      &.active hr {
+        height: 2px;
+        background: linear-gradient(231.58deg, #f83600 -53.35%, #f9d423 297.76%);
+        border: none;
+      }
+    }
+    .books-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-left: 20px;
+      overflow: hidden;
+      transition: height 1s cubic-bezier(0, 0, 1, 1) 100ms;
+      &.hide {
+        display: none;
+        height: 0px;
+      }
+      &__title {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+      }
+      &__item {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        padding-left: 4px;
+        &_count {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          margin-left: 6px;
+          color: #a7a7a7;
+        }
+      }
+    }
+  }
+  .active {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    background: linear-gradient(231.58deg, #f83600 -53.35%, #f9d423 297.76%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+  &__other {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    gap: 42px;
+    position: relative;
+    width: 100%;
+    &.visible {
+      height: 100px;
+    }
+    &_rules,
+    &_offer {
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 28px;
+    }
+  }
+  &__profile-block {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 321px) and (max-width: 768px) {
+  .menu {
+    position: absolute;
+    right: 10000px;
+    top: 96px;    
+    &.menu-header-noactive{
+      display: none;
+    }
+    &.menu-header-active{
+      display: flex;
+    }
+    .books-list {
+      height: 632px;
+    }
+    &.open-menu {
+      left: 64px;
+      z-index: 100;
+      min-width: 502px;
+      padding: 32px;
+      background: #f9f9fa;
+      box-shadow: 0px 2px 4px rgba(191, 196, 201, 0.2), 0px 3px 4px rgba(191, 196, 201, 0.18),
+        0px 1px 5px rgba(191, 196, 201, 0.24);
+      border-radius: 10px;
+    }
+    &__profile-block {
+      display: flex;
+      width: 100%;
+      margin-top: 52px;
+      border-top: 1px solid #bfc4c9;
+      & .profile {
+        display: flex;
+        height: 98px;
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 28px;
+        margin-top: 32px;
+      }
+    }
+
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .menu {
+    position: absolute;
+    right: 10000px;
+    top: 76px;
+    &.menu-header-noactive{
+      display: none;
+    }
+    &.menu-header-active{
+      display: flex;
+    }
+    &.open-menu {
+      left: 16px;
+      z-index: 100;
+      min-width: 288px;
+      padding: 32px 16px 52px;
+      background: #f9f9fa;
+      box-shadow: 0px 2px 4px rgba(191, 196, 201, 0.2), 0px 3px 4px rgba(191, 196, 201, 0.18),
+        0px 1px 5px rgba(191, 196, 201, 0.24);
+      border-radius: 10px;
+    }
+    &__profile-block {
+      display: flex;
+      width: 100%;
+      margin-top: 52px;
+      border-top: 1px solid #bfc4c9;
+      & .profile {
+        display: flex;
+        height: 98px;
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 28px;
+        margin-top: 32px;
+      }
+    }
+  }
+}
