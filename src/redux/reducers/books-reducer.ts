@@ -93,7 +93,6 @@ const booksSlice = createSlice({
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.error = null;
         state.categories = action.payload;
-        state.status = 'idle';
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.error = action.error;
