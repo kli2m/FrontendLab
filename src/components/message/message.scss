@@ -12,18 +12,41 @@
   z-index: 1000;
   border: 1.5px solid #f42c4f;
   border-radius: 5px;
-  &__content{
+  &__content {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
   }
-  &__btn-close{
+  &__btn-close {
     border: none;
     background: none;
     cursor: pointer;
   }
   &.alert {
-    display: flex;      
+    display: flex;
+  }
+}
+
+@media only screen and (min-width: 321px) and (max-width: 768px) {
+  .message {
+    padding: 24px 16px;
+    &__content {
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .message {
+    padding: 12px 16px;
+    &__content {
+      font-size: 14px;
+      line-height: 18px;
+    }
   }
 }
