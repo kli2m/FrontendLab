@@ -1,5 +1,5 @@
-export const getDateBookedTill = (str: string): string => {
-  const newDate = new Date(Date.parse(str));
+export const getDateBookedTill = (date: Date): string => {
+  const newDate = new Date(date);
   const month = newDate.getMonth() + 1;
   const year = newDate.getFullYear();
 

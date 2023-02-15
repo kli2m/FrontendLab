@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { ThunkDispatch } from '@reduxjs/toolkit';
 import classNames from 'classnames';
 
-import { MENU } from '../../constants/menu-bar';
 import { ROUTES_NAMES } from '../../constants/routes';
+import { fetchBooks, fetchCategories } from '../../redux/reducers/books-reducer';
 import { setIsOpenBooks, toggleOpenBooks, toggleOpenMenu } from '../../redux/reducers/menu-reducer';
 import { RootState } from '../../redux/redux-store';
 
@@ -13,8 +14,10 @@ import './menu.scss';
 export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => {
   const isOpenBooksMenu = useSelector((state: RootState) => state.menu.isOpenBooks);
   const isOpenMenu = useSelector((state: RootState) => state.menu.isOpen);
+  const mutEntities = useSelector((state: RootState) => state.books.mutEntities);
+  const error = useSelector((state: RootState) => state.books.error);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const navigate = useNavigate();
 
   const params = useParams();
@@ -29,6 +32,11 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
   const onHandleToggleHide = () => {
     dispatch(toggleOpenBooks());
     navigate(`${ROUTES_NAMES.ALL_BOOKS}`);
+
+    if (mutEntities.length === 0) {
+      dispatch(fetchCategories());
+      if (error === null) dispatch(fetchBooks());
+    }
   };
 
   const onHandleClickMenu = (event: React.MouseEvent) => {
@@ -73,14 +81,15 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
           >
             Все книги
           </NavLink>
-          {MENU.map((book, ind) => (
-            <li key={`${book.category} ${ind + 1}`} className='books-list__item'>
-              <NavLink onClick={onHandleCloseMenu} to={`/books/${book.category}`} className='books-list__item_link'>
-                <span>{book.name}</span>
-              </NavLink>
-              <span className='books-list__item_count'>{book.count}</span>
-            </li>
-          ))}
+          {mutEntities &&
+            mutEntities.map((categ, ind) => (
+              <li key={`${categ.name} ${ind + 1}`} className='books-list__item'>
+                <NavLink onClick={onHandleCloseMenu} to={`/books/${categ.path}`} className='books-list__item_link'>
+                  <span>{categ.name}</span>
+                </NavLink>
+                <span className='books-list__item_count'>{categ.books.length}</span>
+              </li>
+            ))}
         </ul>
       </div>
       <div className={classNames('menu__other', classOpenBooksMenu)}>

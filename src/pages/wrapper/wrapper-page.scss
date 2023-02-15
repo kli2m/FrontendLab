@@ -6,7 +6,9 @@
   flex-direction: column;
   padding: 32px 165px 0;
   margin: 0 auto;
+
   &__content {
+    position: relative;
     width: 100%;
     height: 100%;
     padding: 42px 0;
@@ -30,7 +32,7 @@
     max-width: 768px;
     padding: 0 64px;
     &__content {
-    padding: 24px 0;
+      padding: 24px 0;
     }
   }
 }

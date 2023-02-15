@@ -7,7 +7,8 @@ import { WrongPage } from '../pages/wrong-pages';
 
 export const ROUTES_NAMES = {
   MAIN_PAGE: '/books',
-  ALL_BOOKS: '/:all',
+  ALL_BOOKS: '/books/all',
+  ALL_BOOKS_CARD: '/books/all/:id',
   RULES: '/rules',
   OFFER: '/offer',
   PROFILE: '/PROFILE',
@@ -31,6 +32,11 @@ export const PUBLIC_ROUTES: Router[] = [
   {
     path: ROUTES_NAMES.CATEGORY,
     component: MainPage,
+    exact: true,
+  },
+  {
+    path: ROUTES_NAMES.ALL_BOOKS_CARD,
+    component: CardView,
     exact: true,
   },
   {

@@ -13,7 +13,6 @@ export const Navigation: React.FC = () => {
   const isClickedSearch = useSelector((state: RootState) => state.nav.isClickedSearch);
 
   const classClickedSearch = isClickedSearch ? 'search_active' : 'search_noactive';
-
   const dispatch = useDispatch();
 
   const onHandleTile = () => {
@@ -65,8 +64,8 @@ export const Navigation: React.FC = () => {
           </button>
         </div>
         <div className={classNames('navigation__rating', classClickedSearch)}>
-            <span>По рейтингу</span>
-            <img className='navigation__rating_img' src={rating} alt='rating' />
+          <span>По рейтингу</span>
+          <img className='navigation__rating_img' src={rating} alt='rating' />
         </div>
       </div>
       <div className={classNames('navigation__split', classClickedSearch)}>
