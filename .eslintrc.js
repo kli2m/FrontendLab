@@ -17,16 +17,15 @@ module.exports = {
             'error',
             {
                 // TODO: добавить после cypess 'cypress/**/*.ts',
-                devDependencies: ['**/*.test.{ts,tsx,js,jsx}', '**/setup-tests.{js,ts,tsx}'],
+                devDependencies: true,
             },
-
         ],
         'import/no-default-export': 'error',
         indent: 'off', // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
         '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^action' }],
         "no-nested-ternary": "off",
         "no-unneeded-ternary": "off",
-        "no-param-reassign": [2, { 
+        "no-param-reassign": [2, {
             "props": false
         }]
     },

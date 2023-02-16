@@ -95,7 +95,7 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
       <div className={classNames('menu__other', classOpenBooksMenu)}>
         <NavLink
           onClick={onHandleClickOther}
-          to='/rules'
+          to={ROUTES_NAMES.RULES}
           className={({ isActive }) => (isActive ? 'menu__other_rules active' : 'menu__other_rules')}
           data-test-id={classNames(isOpenMenu ? 'burger-terms' : 'navigation-terms')}
         >
@@ -103,7 +103,7 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
         </NavLink>
         <NavLink
           onClick={onHandleClickOther}
-          to='/offer'
+          to={ROUTES_NAMES.OFFER}
           className={({ isActive }) => (isActive ? 'menu__other_offer active' : 'menu__other_offer')}
           data-test-id={classNames(isOpenMenu ? 'burger-contract' : 'navigation-contract')}
         >
@@ -114,14 +114,14 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
         <div className='profile'>
           <NavLink
             onClick={onHandleClickOther}
-            to='/rules'
+            to={ROUTES_NAMES.PROFILE}
             className={({ isActive }) => (isActive ? 'profile__data active' : 'profile__data')}
           >
             Профиль
           </NavLink>
           <NavLink
             onClick={onHandleClickOther}
-            to='/rules'
+            to={ROUTES_NAMES.LOGOUT}
             className={({ isActive }) => (isActive ? 'profile__exit active' : 'profile__exit')}
           >
             Выход

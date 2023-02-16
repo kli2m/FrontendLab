@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { ImageType } from '../../interfaces/book';
+import { getPathImage } from '../../utils';
+
 import './slider.scss';
 
 import 'swiper/css';
@@ -10,7 +13,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/pagination';
 
-export const Slider: React.FC<{ images: string[] }> = ({ images }) => {
+export const Slider: React.FC<{ images: ImageType[] }> = ({ images }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 
   return (
@@ -37,8 +40,8 @@ export const Slider: React.FC<{ images: string[] }> = ({ images }) => {
         }}
       >
         {images.map((img, index) => (
-          <SwiperSlide data-test-id='slide-mini' className='slider__slide' key={`${img} ${index + 1}`}>
-            <img src={img} alt={`img_${index}`} />
+          <SwiperSlide data-test-id='slide-mini' className='slider__slide' key={`${img.url} ${index + 1}`}>
+            <img src={getPathImage(img.url)} alt={`img_${index}`} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -54,8 +57,8 @@ export const Slider: React.FC<{ images: string[] }> = ({ images }) => {
       >
         <span className='thumbnails__pagination'>
           {images.map((img, index) => (
-            <SwiperSlide data-test-id='slide-mini' className='thumbnails__slide' key={`${img} ${index + 1}`}>
-              <img src={img} alt={`img_${index}`} />
+            <SwiperSlide data-test-id='slide-mini' className='thumbnails__slide' key={`${img.url} ${index + 1}`}>
+              <img src={getPathImage(img.url)} alt={`img_${index}`} />
             </SwiperSlide>
           ))}
         </span>

@@ -3,15 +3,14 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import noimg from '../../assets/img/card/noimg.png';
-import { HOST } from '../../constants/api';
-import { BookType2 } from '../../interfaces/book';
+import { BookType } from '../../interfaces/book';
 import { RootState } from '../../redux/redux-store';
-import { getDateBookedTill } from '../../utils';
+import { getDateBookedTill, getPathImage } from '../../utils';
 import { Rating } from '../rating';
 
 import './card.scss';
 
-export const Card: React.FC<{ book: BookType2; currentCategory: string }> = (props) => {
+export const Card: React.FC<{ book: BookType; currentCategory: string }> = (props) => {
   const isTile = useSelector((state: RootState) => state.nav.isTile);
 
   const { book, currentCategory } = props;
@@ -22,7 +21,7 @@ export const Card: React.FC<{ book: BookType2; currentCategory: string }> = (pro
     <section className={`card ${isTile ? 'tile' : 'list'}`}>
       <NavLink data-test-id='card' to={`/books/${currentCategory}/${book.id}`}>
         {book.image ? (
-          <img className='card__img' src={`${HOST}${book.image.url}`} loading='lazy' alt='img' />
+          <img className='card__img' src={getPathImage(book.image.url)} loading='lazy' alt='img' />
         ) : (
           <img className='card__img' src={noimg} alt='img' />
         )}

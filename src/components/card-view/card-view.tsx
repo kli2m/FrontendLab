@@ -5,15 +5,15 @@ import { ThunkDispatch } from '@reduxjs/toolkit';
 import classNames from 'classnames';
 
 import noimg from '../../assets/img/card/noimg.png';
-import { HOST } from '../../constants/api';
 import { DETAIL } from '../../constants/detail';
 import { fetchBookById } from '../../redux/reducers/books-reducer';
 import { toggleOpenReviews } from '../../redux/reducers/card-view-reducer';
 import { RootState } from '../../redux/redux-store';
-import { getDateBookedTill } from '../../utils';
-// import { Slider } from '../slider';   нет данных из АПИ
+import { getDateBookedTill, getPathImage } from '../../utils';
+import { getDateReview } from '../../utils/get-date-review';
 import { Message } from '../message';
 import { Rating } from '../rating';
+import { Slider } from '../slider';
 
 import './card-view.scss';
 
@@ -23,6 +23,7 @@ export const CardView: React.FC = () => {
   const isOpenReviews = useSelector((state: RootState) => state.cardView.isOpenReviews);
 
   const thisBook = useSelector((state: RootState) => state.books.book);
+
   const categories = useSelector((state: RootState) => state.books.categories);
 
   const currentCategory = categories.find((categ) => categ.name === thisBook?.categories[0]);
@@ -52,14 +53,11 @@ export const CardView: React.FC = () => {
           </div>
           <div className='card-view__main'>
             <div className='card-view__main_img-block img-block'>
-              {thisBook.image ? (
-                // (                                             нет данных из АПИ
-                //   thisBook.image.length > 1 ? (
-                //     <Slider images={thisBook.image.url} />
-                //   ) :
-                <img className='img-block__img' src={`${HOST}${thisBook.image.url}`} loading='lazy' alt='img' />
+              {thisBook.images && thisBook.images?.length > 1 ? (
+                <Slider images={thisBook.images} />
+              ) : thisBook.image ? (
+                <img className='img-block__img' src={getPathImage(thisBook.image.url)} loading='lazy' alt='img' />
               ) : (
-                // )
                 <img className='img-block__img' src={noimg} alt='img' />
               )}
             </div>
@@ -96,20 +94,23 @@ export const CardView: React.FC = () => {
             <div className='card-view__addition_info info'>
               <span className='info__title'>Подробная информация</span>
               <div className='info__detail'>
-                {DETAIL.map((item, index) => (
-                  <div key={`${item} ${index + 1}`} className='info__detail_item item'>
-                    <span className='item__name'>{item.name}</span>
-                    <span className='item__value'>{item.value}</span>
-                  </div>
-                ))}
+                {DETAIL.map((item, index) =>
+                  Object.entries(thisBook).map(
+                    (val) =>
+                      val[0] === item.equal && (
+                        <div key={`${item} ${index + 1}`} className='info__detail_item item'>
+                          <span className='item__name'>{item.name}</span>
+                          <span className='item__value'>{val[1] ? val[1] : '-'}</span>
+                        </div>
+                      )
+                  )
+                )}
               </div>
             </div>
             <div className='card-view__addition_reviews reviews'>
               <div className='reviews__title'>
                 <span className='reviews__title_name'>Отзывы</span>
-                {/* <span className='reviews__title_count'>          // данные отсутствуют в АПИ
-            {thisBook.reviews.length }
-            </span> */}
+                <span className='reviews__title_count'>{thisBook.comments && thisBook.comments.length}</span>
                 <button
                   className={classNames('reviews__title_btn', classOpenReviews)}
                   type='button'
@@ -121,21 +122,29 @@ export const CardView: React.FC = () => {
               </div>
               <div className='reviews__content'>
                 <div className={classNames('reviews__content_items', classOpenReviews)}>
-                  {/* {thisBook.reviews.map((rev, ind) => (               // данные отсутствуют в АПИ
-                <div key={`${ind + 1}`} className='review'>
-                  <div className='review__main'>
-                    <img className='review__main_img' src={rev.img} alt={rev.name} />
-                    <div className='review__main_data'>
-                      <span>{rev.name}</span>
-                      <span>{rev.date}</span>
-                    </div>
-                  </div>
-                  <div className='review__rating'>
-                    <Rating rating={rev.personalRating} isScore={false} />
-                  </div>
-                  <div className='review__comment'>{rev.comment}</div>
-                </div>
-              ))} */}
+                  {thisBook.comments &&
+                    thisBook.comments.map((rev, ind) => (
+                      <div key={`${ind + 1}`} className='review'>
+                        <div className='review__main'>
+                          <img
+                            className='review__main_img'
+                            src={rev.user.avatarUrl && getPathImage(rev.user.avatarUrl)}
+                            loading='lazy'
+                            alt='avatarImg'
+                          />
+                          <div className='review__main_data'>
+                            <span>
+                              {rev.user.firstName} {rev.user.lastName}
+                            </span>
+                            <span>{getDateReview(rev.createdAt)}</span>
+                          </div>
+                        </div>
+                        <div className='review__rating'>
+                          <Rating rating={rev.rating} isScore={false} />
+                        </div>
+                        <div className='review__comment'>{rev.text}</div>
+                      </div>
+                    ))}
                 </div>
                 <button data-test-id='button-rating' className='reviews__content_btn' type='button'>
                   оценить книгу

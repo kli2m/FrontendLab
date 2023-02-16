@@ -1,5 +1,17 @@
 import { UserType } from './user';
 
+export interface ImageType {
+  url: string;
+}
+
+export interface CommentType {
+  id: number;
+  rating: number;
+  text: string;
+  createdAt: Date;
+  user: UserType;
+}
+
 export interface CategoriesType {
   name: string;
   path: string;
@@ -7,7 +19,7 @@ export interface CategoriesType {
 }
 
 export interface MutBooksType extends CategoriesType {
-  books: BookType2[];
+  books: BookType[];
 }
 
 export interface MenuType {
@@ -26,28 +38,25 @@ export interface ReviewType {
 }
 
 export interface BookType {
-  id: string;
-  image?: string[];
-  category: string;
-  author: string;
+  id: number;
   title: string;
   rating: number;
-  reviews: ReviewType[];
-  year: number;
-  isBooked: boolean;
-  bookedTill: string;
-}
-
-export interface BookType2 {
   issueYear: number;
-  rating: number;
-  title: string;
-  authors: [string];
-  image: {
+  description?: string;
+  publish?: string;
+  pages?: number;
+  cover?: string;
+  weight?: number;
+  format?: string;
+  ISBN?: string;
+  producer?: string;
+  authors: string[];
+  images?: ImageType[];
+  image?: {
     url: string;
   };
   categories: string[];
-  id: number;
+  comments: CommentType[];
   booking: {
     id: number;
     order: boolean;

@@ -2,15 +2,15 @@ import { createAsyncThunk, createEntityAdapter, createSlice, SerializedError } f
 import axios from 'axios';
 
 import { GET_ALL_BOOKS_API, GET_BOOK_BY_ID_API,GET_CATEGORIES_API } from '../../constants/api';
-import { BookType2, CategoriesType, MutBooksType } from '../../interfaces/book';
+import { BookType, CategoriesType, MutBooksType } from '../../interfaces/book';
 
 export interface BooksState {
   status: string;
-  entities: BookType2[];
+  entities: BookType[];
   categories: CategoriesType[];
   mutEntities: MutBooksType[];
   error: SerializedError | null;
-  book: BookType2 | null;
+  book: BookType | null;
 }
 
 const initialState: BooksState = {

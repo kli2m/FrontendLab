@@ -32,12 +32,7 @@ export const Navigation: React.FC = () => {
   return (
     <section className='navigation'>
       <div className={classNames('navigation__split', classClickedSearch)}>
-        <div
-          className={classNames('navigation__search', classClickedSearch)}
-          role='button'
-          onKeyPress={() => {}}
-          tabIndex={0}
-        >
+        <div className={classNames('navigation__search', classClickedSearch)}>
           <input
             className={classNames('navigation__search_input', classClickedSearch)}
             type='search'
