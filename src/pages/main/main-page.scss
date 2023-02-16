@@ -1,0 +1,21 @@
+.main-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 21.5px;
+  justify-content: flex-start;
+
+}
+@media only screen and (min-width:761px) and (max-width:1001px) {
+  .main-page {
+    gap: 16px;
+    justify-content: center;
+  }
+}
+@media only screen and (max-width:320px) {
+  .main-page {
+    gap: 16px;
+    justify-content: center;
+  }
+}
