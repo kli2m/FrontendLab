@@ -32,11 +32,8 @@ export const Card: React.FC<{ book: BookType; currentCategory: string }> = (prop
           <Rating rating={book.rating} isScore={false} />
         </div>
         <div className='description'>
-          <span className='card__title'>{book.title}</span>
-          <div className='card__author'>
-            <span>{book.authors},</span>
-            <span>{book.issueYear}</span>
-          </div>
+          <span className='card__title'>{book.title}</span>          
+            <span className='card__author'>{book.authors}, {book.issueYear}</span>                   
         </div>
         {book.booking ? (
           <button type='button' className='card__btn booked'>

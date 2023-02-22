@@ -32,7 +32,7 @@ export const CardView: React.FC = () => {
 
   const params = useParams();
   const { id } = params;
-
+  
   useEffect(() => {
     if (id) dispatch(fetchBookById(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,6 +57,8 @@ export const CardView: React.FC = () => {
                 <Slider images={thisBook.images} />
               ) : thisBook.image ? (
                 <img className='img-block__img' src={getPathImage(thisBook.image.url)} loading='lazy' alt='img' />
+              ) : thisBook.images ? (
+                <img className='img-block__img' src={getPathImage(thisBook.images[0].url)} loading='lazy' alt='img' />
               ) : (
                 <img className='img-block__img' src={noimg} alt='img' />
               )}
@@ -64,7 +66,6 @@ export const CardView: React.FC = () => {
             <div className='card-view__main_content'>
               <span className='card__title'>{thisBook.title}</span>
               <div className='card__author'>
-                <span>{thisBook.authors}, </span>
                 <span>{thisBook.authors}</span>
               </div>
               {thisBook.booking ? (

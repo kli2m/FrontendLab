@@ -3,6 +3,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  gap: 8px;
   &__split {
     display: flex;
     gap: 16px;
@@ -26,13 +27,16 @@
     & input {
       width: 100%;
       height: inherit;
-      padding-left: 40px;
+      padding: 0 16px 0 40px;
       left: 40px;
       top: calc(50% - 18px / 2);
       color: #a7a7a7;
       font-weight: 400;
       font-size: 14px;
       line-height: 18px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       &::placeholder {
         font-weight: 400;
         font-size: 14px;
@@ -135,6 +139,9 @@
 }
 @media only screen and (min-width: 769px) and (max-width: 1000px) {
   .navigation {
+    &__split {
+      gap: 8px;
+    }
     &__search {
       &_btn {
         left: 10px;
@@ -145,9 +152,8 @@
         left: 10px;
       }
     }
-    &__search,
     &__rating {
-      width: 38px;
+      min-width: 38px;
       height: 38px;
       padding: 0;
 
@@ -155,10 +161,14 @@
         display: none;
       }
     }
+    &__search {
+      width: fit-content;
+      padding: 0;
+    }
   }
 }
 
-@media only screen and (min-width: 321px) and (max-width: 768px) {
+@media only screen and (min-width: 451px) and (max-width: 768px) {
   .navigation {
     &__search {
       max-width: 274px;
@@ -173,10 +183,42 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &_img {
+        left: 8px;
+      }
     }
   }
 }
-
+@media only screen and (min-width: 321px) and (max-width: 450px) {
+  .navigation {
+    &__split {
+      gap: 8px;
+    }
+    &__search {
+      max-width: 274px;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &__rating {
+      min-width: 38px;
+      min-height: 38px;
+      padding: 0;
+      span {
+        display: none;
+      }
+      &_img {
+        left: 8px;
+      }
+    }
+  }
+}
 @media only screen and (max-width: 320px) {
   .navigation {
     height: 38px;
@@ -214,10 +256,7 @@
         height: 16px;
         right: 19px;
         top: calc(50% - 12px / 2);
-        cursor: pointer;
-        &::before {
-          content: url(../../assets/img/navigation/cross.svg);
-        }
+        cursor: pointer;       
       }
       &_close.search_noactive {
         display: none;
@@ -236,9 +275,8 @@
         display: none;
       }
 
-      img {
+      &_img {
         left: 8px;
-        top: calc(50% - 6px);
       }
       &.search_active {
         display: none;
