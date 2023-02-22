@@ -3,12 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface NavState {
   isTile: boolean;
-  isClickedSearch : boolean;
+  isClickedSearch: boolean;
+  isAscending: boolean;
+  inputValue: string;
 }
 
 const initialState: NavState = {
   isTile: true,
-  isClickedSearch:false,
+  isClickedSearch: false,
+  isAscending: true,
+  inputValue: '',
 };
 
 export const navSlice = createSlice({
@@ -21,12 +25,18 @@ export const navSlice = createSlice({
     setLayout: (state, action: PayloadAction<boolean>) => {
       state.isTile = action.payload;
     },
-    setIsSearch:(state, action:PayloadAction<boolean>) => {
+    setIsSearch: (state, action: PayloadAction<boolean>) => {
       state.isClickedSearch = action.payload;
+    },
+    toggleAscending: (state) => {
+      state.isAscending = !state.isAscending;
+    },
+    setInputValue: (state, action: PayloadAction<string>) => {
+      state.inputValue = action.payload;
     },
   },
 });
 
-export const { setLayout, toggleLayout, setIsSearch } = navSlice.actions;
+export const { setLayout, toggleLayout, setIsSearch, setInputValue } = navSlice.actions;
 
 export const navReducer = navSlice.reducer;

@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
+
 import { ReactComponent as StarImg } from '../../assets/img/rating/Star.svg';
+
 import './rating.scss';
 
 export const Rating: React.FC<{ rating: number; isScore: boolean }> = ({ rating, isScore }): JSX.Element => {

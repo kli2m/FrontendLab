@@ -15,6 +15,8 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
   const isOpenBooksMenu = useSelector((state: RootState) => state.menu.isOpenBooks);
   const isOpenMenu = useSelector((state: RootState) => state.menu.isOpen);
   const mutEntities = useSelector((state: RootState) => state.books.mutEntities);
+  const entities = useSelector((state: RootState) => state.books.entities);
+
   const error = useSelector((state: RootState) => state.books.error);
 
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -87,7 +89,7 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
                 <NavLink onClick={onHandleCloseMenu} to={`/books/${categ.path}`} className='books-list__item_link'>
                   <span>{categ.name}</span>
                 </NavLink>
-                <span className='books-list__item_count'>{categ.books.length}</span>
+                <span className='books-list__item_count'>{entities.filter(book=>book.categories.some(catBook=>catBook===categ.name)).length }</span>
               </li>
             ))}
         </ul>

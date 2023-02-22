@@ -1,8 +1,9 @@
 import { createAsyncThunk, createEntityAdapter, createSlice, SerializedError } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { GET_ALL_BOOKS_API, GET_BOOK_BY_ID_API,GET_CATEGORIES_API } from '../../constants/api';
+import { GET_ALL_BOOKS_API, GET_BOOK_BY_ID_API, GET_CATEGORIES_API } from '../../constants/api';
 import { BookType, CategoriesType, MutBooksType } from '../../interfaces/book';
+import { getFixString } from '../../utils';
 
 export interface BooksState {
   status: string;
@@ -11,6 +12,7 @@ export interface BooksState {
   mutEntities: MutBooksType[];
   error: SerializedError | null;
   book: BookType | null;
+  filterBooks: BookType[];
 }
 
 const initialState: BooksState = {
@@ -20,6 +22,7 @@ const initialState: BooksState = {
   mutEntities: [],
   error: null,
   book: null,
+  filterBooks: [],
 };
 
 export const fetchBooks = createAsyncThunk('books', async () => {
@@ -42,12 +45,17 @@ export const fetchBookById = createAsyncThunk('book', async (id: string) => {
 
 const booksAdapter = createEntityAdapter();
 
-const booksSlice = createSlice({
+export const booksSlice = createSlice({
   name: 'books',
   initialState: booksAdapter.getInitialState(initialState),
   reducers: {
     setValueError: (state, action) => {
       state.error = action.payload;
+    },
+    setFilterBooks: (state, action) => {
+      state.filterBooks = state.entities.filter((book) =>
+        getFixString(book.title).indexOf(getFixString(action.payload)) === -1 ? false : true
+      );
     },
   },
   extraReducers: (builder) => {
@@ -60,6 +68,8 @@ const booksSlice = createSlice({
       })
       .addCase(fetchBooks.fulfilled, (state, action) => {
         state.entities = action.payload;
+        state.filterBooks = action.payload;
+
         if (state.categories && state.entities) {
           state.mutEntities = state.categories.map((category) => ({
             ...category,
@@ -69,10 +79,10 @@ const booksSlice = createSlice({
           if (state.mutEntities) {
             state.status = 'idle';
             state.error = null;
-          } else{ state.error = new Error('Wrong data from api');
-          state.status = 'idle';
-        
-        }
+          } else {
+            state.error = new Error('Wrong data from api');
+            state.status = 'idle';
+          }
         } else {
           state.status = 'idle';
 
@@ -117,6 +127,6 @@ const booksSlice = createSlice({
   },
 });
 
-export const { setValueError } = booksSlice.actions;
+export const { setValueError, setFilterBooks } = booksSlice.actions;
 
 export const booksReducer = booksSlice.reducer;

@@ -117,14 +117,14 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    &_img {
+    &_img path {
       fill: #a7a7a7;
       width: 19px;
       height: 19px;
     }
     &.active {
       background: linear-gradient(231.58deg, #f83600 -53.35%, #f9d423 297.76%);
-      svg {
+      path {
         fill: #ffffff;
       }
     }
@@ -256,7 +256,7 @@
         height: 16px;
         right: 19px;
         top: calc(50% - 12px / 2);
-        cursor: pointer;       
+        cursor: pointer;
       }
       &_close.search_noactive {
         display: none;
