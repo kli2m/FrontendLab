@@ -33,14 +33,14 @@ export const MainPage: React.FC = () => {
             filterEntities.length > 0 ? (
               filterEntities.map((book) => <Card key={`${book.id}`} currentCategory={category} book={book} />)
             ) : inputValue ? (
-              <NoFind text='По запросу ничего не найдено' />
+              <NoFind isFilter={true} />
             ) : (
-              <NoFind text='В этой категории книг ещё нет' />
+              <NoFind isFilter={false} />
             )
           ) : filterBooks.length > 0 ? (
             filterBooks.map((book) => <Card key={`${book.id}`} currentCategory='all' book={book} />)
           ) : (
-            <NoFind text='По запросу ничего не найдено' />
+            <NoFind isFilter={true} />
           )}
         </section>
       </div>

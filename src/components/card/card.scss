@@ -66,6 +66,9 @@
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
+      & .hightlight {
+        color: #ff5253;
+      }
     }
     .card__author {
       font-weight: 400;

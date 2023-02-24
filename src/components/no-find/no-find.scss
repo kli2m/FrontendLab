@@ -9,5 +9,21 @@
     justify-content: center;
     line-height: 40px;
     color: #a7a7a7;
+    text-align: center;
+
+    br{display: none;}
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .no-find {
+    &__content {
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 28px;
+      text-align: center;
+
+      br{display:initial}
+    }
   }
 }

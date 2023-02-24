@@ -2,11 +2,18 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
+import { ReactComponent as CrossSVG } from '../../assets/img/navigation/cross.svg';
 import { ReactComponent as ListSVG } from '../../assets/img/navigation/list.svg';
 import { ReactComponent as RatingSVG } from '../../assets/img/navigation/rating.svg';
+import { ReactComponent as SearchSVG } from '../../assets/img/navigation/search.svg';
 import { ReactComponent as TileSVG } from '../../assets/img/navigation/tile.svg';
-import { setFilterBooks } from '../../redux/reducers/books-reducer';
-import { setInputValue, setIsSearch, setLayout } from '../../redux/reducers/navigation-reducer';
+import {
+  setFilterBooks,
+  setInputValue,
+  setIsSearch,
+  setLayout,
+  toggleDescending,
+} from '../../redux/reducers/navigation-reducer';
 import { RootState } from '../../redux/redux-store';
 
 import './navigation.scss';
@@ -15,6 +22,7 @@ export const Navigation: React.FC = () => {
   const isTile = useSelector((state: RootState) => state.nav.isTile);
   const isClickedSearch = useSelector((state: RootState) => state.nav.isClickedSearch);
   const inputValue = useSelector((state: RootState) => state.nav.inputValue);
+  const isDescending = useSelector((state: RootState) => state.nav.isDescending);
 
   const classClickedSearch = isClickedSearch ? 'search_active' : 'search_noactive';
   const dispatch = useDispatch();
@@ -38,10 +46,14 @@ export const Navigation: React.FC = () => {
     dispatch(setIsSearch(false));
   };
 
+  const onHandleToggleRating = () => {
+    dispatch(toggleDescending(isDescending));
+  };
+
   return (
     <section className='navigation'>
       <div className={classNames('navigation__split', classClickedSearch)}>
-        <div className={classNames('navigation__search', classClickedSearch)}>
+        <div data-test-id='input-search' className={classNames('navigation__search', classClickedSearch)}>
           <input
             className={classNames('navigation__search_input', classClickedSearch)}
             type='search'
@@ -58,7 +70,7 @@ export const Navigation: React.FC = () => {
             type='button'
             onClick={onHandleSearch}
           >
-            {' '}
+            <SearchSVG />
           </button>
           <button
             data-test-id='button-search-close'
@@ -66,13 +78,18 @@ export const Navigation: React.FC = () => {
             type='button'
             onClick={onHandleCloseSearch}
           >
-            {' '}
+            <CrossSVG />
           </button>
         </div>
-        <div className={classNames('navigation__rating', classClickedSearch)}>
+        <button
+          type='button'
+          onClick={onHandleToggleRating}
+          className={classNames('navigation__rating', classClickedSearch)}
+          data-test-id='sort-rating-button'
+        >
           <span>По рейтингу</span>
-          <RatingSVG className='navigation__rating_img' />
-        </div>
+          <RatingSVG className={classNames('navigation__rating_img', isDescending ? 'descending' : '')} />
+        </button>
       </div>
       <div className={classNames('navigation__split', classClickedSearch)}>
         <button

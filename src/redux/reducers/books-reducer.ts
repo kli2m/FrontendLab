@@ -1,13 +1,15 @@
-import { createAsyncThunk, createEntityAdapter, createSlice, SerializedError } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction,SerializedError } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { GET_ALL_BOOKS_API, GET_BOOK_BY_ID_API, GET_CATEGORIES_API } from '../../constants/api';
 import { BookType, CategoriesType, MutBooksType } from '../../interfaces/book';
 import { getFixString } from '../../utils';
 
+import { navSlice } from './navigation-reducer';
+
 export interface BooksState {
   status: string;
-  entities: BookType[];
+  booksArray: BookType[];
   categories: CategoriesType[];
   mutEntities: MutBooksType[];
   error: SerializedError | null;
@@ -17,7 +19,7 @@ export interface BooksState {
 
 const initialState: BooksState = {
   status: 'idle',
-  entities: [],
+  booksArray: [],
   categories: [],
   mutEntities: [],
   error: null,
@@ -49,13 +51,8 @@ export const booksSlice = createSlice({
   name: 'books',
   initialState: booksAdapter.getInitialState(initialState),
   reducers: {
-    setValueError: (state, action) => {
+    setValueError: (state, action: PayloadAction<SerializedError | null>) => {
       state.error = action.payload;
-    },
-    setFilterBooks: (state, action) => {
-      state.filterBooks = state.entities.filter((book) =>
-        getFixString(book.title).indexOf(getFixString(action.payload)) === -1 ? false : true
-      );
     },
   },
   extraReducers: (builder) => {
@@ -66,14 +63,18 @@ export const booksSlice = createSlice({
         state.mutEntities = [];
         state.categories = [];
       })
-      .addCase(fetchBooks.fulfilled, (state, action) => {
-        state.entities = action.payload;
-        state.filterBooks = action.payload;
+      .addCase(fetchBooks.fulfilled, (state, action: PayloadAction<BookType[]>) => {
+        const tempArrBooks = action.payload;
 
-        if (state.categories && state.entities) {
+        tempArrBooks.sort((a, b) => b.rating - a.rating);
+
+        state.booksArray = tempArrBooks;
+        state.filterBooks = tempArrBooks;
+
+        if (state.categories && state.booksArray) {
           state.mutEntities = state.categories.map((category) => ({
             ...category,
-            books: state.entities.filter((book) => book.categories.some((cat) => cat === category.name)),
+            books: state.booksArray.filter((book) => book.categories.some((cat) => cat === category.name)),
           }));
 
           if (state.mutEntities) {
@@ -100,7 +101,7 @@ export const booksSlice = createSlice({
         state.error = null;
         state.categories = [];
       })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
+      .addCase(fetchCategories.fulfilled, (state, action: PayloadAction<CategoriesType[]>) => {
         state.error = null;
         state.categories = action.payload;
       })
@@ -114,7 +115,7 @@ export const booksSlice = createSlice({
         state.book = null;
         state.status = 'loading';
       })
-      .addCase(fetchBookById.fulfilled, (state, action) => {
+      .addCase(fetchBookById.fulfilled, (state, action: PayloadAction<BookType>) => {
         state.error = null;
         state.book = action.payload;
         state.status = 'idle';
@@ -123,10 +124,24 @@ export const booksSlice = createSlice({
         state.error = action.error;
         state.book = null;
         state.status = 'failed';
+      })
+      .addCase(navSlice.actions.toggleDescending, (state, action: PayloadAction<boolean>) => {
+        if (action.payload) {
+          state.booksArray.sort((a, b) => a.rating - b.rating);
+          state.filterBooks.sort((a, b) => a.rating - b.rating);
+        } else {
+          state.filterBooks.sort((a, b) => b.rating - a.rating);
+          state.booksArray.sort((a, b) => b.rating - a.rating);
+        }
+      })
+      .addCase(navSlice.actions.setFilterBooks, (state, action: PayloadAction<string>) => {
+        state.filterBooks = state.booksArray.filter((book) =>
+          getFixString(book.title).indexOf(getFixString(action.payload)) === -1 ? false : true
+        );
       });
   },
 });
 
-export const { setValueError, setFilterBooks } = booksSlice.actions;
+export const { setValueError } = booksSlice.actions;
 
 export const booksReducer = booksSlice.reducer;

@@ -15,7 +15,7 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
   const isOpenBooksMenu = useSelector((state: RootState) => state.menu.isOpenBooks);
   const isOpenMenu = useSelector((state: RootState) => state.menu.isOpen);
   const mutEntities = useSelector((state: RootState) => state.books.mutEntities);
-  const entities = useSelector((state: RootState) => state.books.entities);
+  const booksArray = useSelector((state: RootState) => state.books.booksArray);
 
   const error = useSelector((state: RootState) => state.books.error);
 
@@ -86,10 +86,22 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
           {mutEntities &&
             mutEntities.map((categ, ind) => (
               <li key={`${categ.name} ${ind + 1}`} className='books-list__item'>
-                <NavLink onClick={onHandleCloseMenu} to={`/books/${categ.path}`} className='books-list__item_link'>
+                <NavLink
+                  data-test-id={classNames(isOpenMenu ? `burger-${categ.path}` : `navigation-${categ.path}`)}
+                  onClick={onHandleCloseMenu}
+                  to={`/books/${categ.path}`}
+                  className='books-list__item_link'
+                >
                   <span>{categ.name}</span>
                 </NavLink>
-                <span className='books-list__item_count'>{entities.filter(book=>book.categories.some(catBook=>catBook===categ.name)).length }</span>
+                <span
+                  className='books-list__item_count'
+                  data-test-id={classNames(
+                    isOpenMenu ? `burger-book-count-for-${categ.path}` : `navigation-book-count-for-${categ.path}`
+                  )}
+                >
+                  {booksArray.filter((book) => book.categories.some((catBook) => catBook === categ.name)).length}
+                </span>
               </li>
             ))}
         </ul>

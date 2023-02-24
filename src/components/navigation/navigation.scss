@@ -37,11 +37,17 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      caret-color: #f83600;
       &::placeholder {
         font-weight: 400;
         font-size: 14px;
         line-height: 18px;
         color: #a7a7a7;
+      }
+      &:focus ~ button {
+        svg path {
+          fill: #f83600;
+        }
       }
     }
     & input {
@@ -61,14 +67,12 @@
       top: calc(50% - 16px / 2);
       cursor: pointer;
     }
-    &_btn:before {
-      content: url(../../assets//img/navigation/search.svg);
-    }
     &_close {
       display: none;
     }
   }
   &__rating {
+    border: none;
     position: relative;
     height: 100%;
     max-width: 150px;
@@ -102,6 +106,10 @@
       left: 16px;
       top: calc(50% - 16px / 2);
       z-index: 0;
+      transform: rotate(180deg);
+      &.descending {
+        transform: rotate(0deg);
+      }
     }
   }
   &__loc-tile,
@@ -266,7 +274,6 @@
     &__rating {
       width: 32px;
       height: 32px;
-
       width: 32px;
       height: 32px;
       padding: 0;

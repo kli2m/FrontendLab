@@ -32,7 +32,7 @@ export const CardView: React.FC = () => {
 
   const params = useParams();
   const { id } = params;
-  
+
   useEffect(() => {
     if (id) dispatch(fetchBookById(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,8 +47,9 @@ export const CardView: React.FC = () => {
       {thisBook ? (
         <Fragment>
           <div className='card-view__path'>
-            <NavLink to={`../books/${currentCategory?.path}`}>
-              {currentCategory?.name} <span>/</span> {thisBook.title}
+            <NavLink data-test-id='breadcrumbs-link' to={`../books/${currentCategory?.path}`}>
+              {currentCategory?.name} <span>/</span>
+              <span data-test-id='book-name'> {thisBook.title}</span>
             </NavLink>
           </div>
           <div className='card-view__main'>
@@ -64,7 +65,9 @@ export const CardView: React.FC = () => {
               )}
             </div>
             <div className='card-view__main_content'>
-              <span className='card__title'>{thisBook.title}</span>
+              <span data-test-id='book-title' className='card__title'>
+                {thisBook.title}
+              </span>
               <div className='card__author'>
                 <span>{thisBook.authors}</span>
               </div>
