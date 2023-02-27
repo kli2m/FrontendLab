@@ -203,4 +203,6 @@ describe('bread crumbs', () => {
             cy.get('[data-test-id=card]').should('have.length', 138);
         });
     });
+
 });
+
