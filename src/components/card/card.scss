@@ -50,8 +50,10 @@
       width: 100%;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       margin: 25px 0 28px;
       flex: 1 0 auto;
+      max-height: 71px;
     }
     .card__title {
       display: block;
@@ -60,10 +62,13 @@
       line-height: 18px;
       color: #363636;
       position: relative;
-      max-height: 54px;
+      max-height: 36px;
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
+      & .hightlight {
+        color: #ff5253;
+      }
     }
     .card__author {
       font-weight: 400;
@@ -112,13 +117,14 @@
     padding: 24px 24px 24px 16px;
     gap: 16px;
     & .content {
-      height: 160px;
       display: flex;
       flex-direction: column-reverse;
       justify-content: space-between;
       align-items: revert;
       flex: 1 0;
       position: relative;
+      max-height: 160px;
+      overflow: hidden;
     }
     .card__img {
       width: 120px;
@@ -132,6 +138,7 @@
       gap: 10px;
       margin-top: 16px;
       align-items: center;
+      width: fit-content;
       span {
         font-weight: 400;
         font-size: 14px;
@@ -148,26 +155,42 @@
       }
     }
     .description {
-      flex: 1 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      max-width: 649px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 96px;
+      gap: 8px;
     }
     .card__title {
       font-weight: 700;
       font-size: 22px;
       line-height: 32px;
       color: #363636;
+      max-height: 96px;
+      overflow: hidden;
+      min-height: 30px;
+      text-overflow: ellipsis;
     }
     .card__author {
       font-weight: 400;
       font-size: 16px;
       line-height: 24px;
       color: #727272;
+      min-height: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .card__btn {
       border: none;
       font-weight: 600;
       font-size: 12px;
       line-height: 18px;
-      width: 166px;
+      width: 100%;
+      max-width: 166px;
       height: 40px;
       border-radius: 20px;
       align-items: center;
@@ -177,8 +200,12 @@
       cursor: pointer;
       margin: 0 auto;
       position: absolute;
-      top: 120px;
-      right: 0px;
+      right: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 4px;
+      white-space: nowrap;
+      bottom: 0;
       &.booked {
         background: #f9f9fa;
         border: 1px solid #bfc4c9;
@@ -192,7 +219,7 @@
   }
 }
 
-@media only screen and (max-width:320px) {
+@media only screen and (max-width: 320px) {
   .card {
     &.tile {
       max-width: 288px;
@@ -213,21 +240,20 @@
       align-items: flex-start;
       padding: 16px 16px 16px 8px;
       & .content {
-        max-height: 94px;
-        height: max-content;
+        max-height: 150px;
+        height: 100%;
         display: flex;
         gap: 3px;
+        justify-content: flex-end;
         .card__rating {
           display: flex;
           height: 16px;
           gap: 6px;
           align-items: center;
           margin: 0;
-          &_star {
+          svg {
             width: 16px;
-          }
-          &_nostar {
-            width: 16px;
+            height: 16px;
           }
         }
       }
@@ -245,15 +271,23 @@
         font-weight: 600;
         font-size: 14px;
         line-height: 18px;
+        max-height: 54px;
       }
       .card__author {
         font-weight: 400;
         font-size: 12px;
         line-height: 18px;
+        max-height: 18px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .card__btn {
-        width: 186px;
-        height: 40px;
+        max-width: 186px;
+        max-height: 40px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 18px;
       }
     }
   }

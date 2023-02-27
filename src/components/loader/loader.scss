@@ -1,5 +1,6 @@
 .loader {
   display: none;
+  z-index: 1000;
   &.loading {    
     background: rgba(54, 54, 54, 0.3);
     width: 100wh;

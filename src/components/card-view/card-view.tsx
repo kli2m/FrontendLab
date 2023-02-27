@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import classNames from 'classnames';
 
@@ -24,9 +24,13 @@ export const CardView: React.FC = () => {
 
   const thisBook = useSelector((state: RootState) => state.books.book);
 
-  const categories = useSelector((state: RootState) => state.books.categories);
+  const mutEntities = useSelector((state: RootState) => state.books.mutEntities);
 
-  const currentCategory = categories.find((categ) => categ.name === thisBook?.categories[0]);
+  const location = useLocation();
+
+  const currLoc = location.pathname.split('/')[2];
+
+  const currentCategory = mutEntities.find((categ) => categ.path === currLoc);
 
   const classOpenReviews = isOpenReviews ? 'rev-open' : 'rev-close';
 
@@ -47,9 +51,11 @@ export const CardView: React.FC = () => {
       {thisBook ? (
         <Fragment>
           <div className='card-view__path'>
-            <NavLink to={`../books/${currentCategory?.path}`}>
-              {currentCategory?.name} <span>/</span> {thisBook.title}
+            <NavLink data-test-id='breadcrumbs-link' to={`../books/${currentCategory?.path}`}>
+              {currentCategory?.name}
             </NavLink>
+            <span>/</span>
+            <span data-test-id='book-name'>{thisBook.title}</span>
           </div>
           <div className='card-view__main'>
             <div className='card-view__main_img-block img-block'>
@@ -57,14 +63,17 @@ export const CardView: React.FC = () => {
                 <Slider images={thisBook.images} />
               ) : thisBook.image ? (
                 <img className='img-block__img' src={getPathImage(thisBook.image.url)} loading='lazy' alt='img' />
+              ) : thisBook.images ? (
+                <img className='img-block__img' src={getPathImage(thisBook.images[0].url)} loading='lazy' alt='img' />
               ) : (
                 <img className='img-block__img' src={noimg} alt='img' />
               )}
             </div>
             <div className='card-view__main_content'>
-              <span className='card__title'>{thisBook.title}</span>
+              <span data-test-id='book-title' className='card__title'>
+                {thisBook.title}
+              </span>
               <div className='card__author'>
-                <span>{thisBook.authors}, </span>
                 <span>{thisBook.authors}</span>
               </div>
               {thisBook.booking ? (

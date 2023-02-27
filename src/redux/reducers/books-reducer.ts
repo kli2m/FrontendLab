@@ -1,25 +1,30 @@
-import { createAsyncThunk, createEntityAdapter, createSlice, SerializedError } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { GET_ALL_BOOKS_API, GET_BOOK_BY_ID_API,GET_CATEGORIES_API } from '../../constants/api';
+import { GET_ALL_BOOKS_API, GET_BOOK_BY_ID_API, GET_CATEGORIES_API } from '../../constants/api';
 import { BookType, CategoriesType, MutBooksType } from '../../interfaces/book';
+import { getFixString } from '../../utils';
+
+import { navSlice } from './navigation-reducer';
 
 export interface BooksState {
   status: string;
-  entities: BookType[];
+  booksArray: BookType[];
   categories: CategoriesType[];
   mutEntities: MutBooksType[];
   error: SerializedError | null;
   book: BookType | null;
+  filterBooks: BookType[];
 }
 
 const initialState: BooksState = {
   status: 'idle',
-  entities: [],
+  booksArray: [],
   categories: [],
   mutEntities: [],
   error: null,
   book: null,
+  filterBooks: [],
 };
 
 export const fetchBooks = createAsyncThunk('books', async () => {
@@ -42,11 +47,11 @@ export const fetchBookById = createAsyncThunk('book', async (id: string) => {
 
 const booksAdapter = createEntityAdapter();
 
-const booksSlice = createSlice({
+export const booksSlice = createSlice({
   name: 'books',
   initialState: booksAdapter.getInitialState(initialState),
   reducers: {
-    setValueError: (state, action) => {
+    setValueError: (state, action: PayloadAction<SerializedError | null>) => {
       state.error = action.payload;
     },
   },
@@ -54,65 +59,100 @@ const booksSlice = createSlice({
     builder
       .addCase(fetchBooks.pending, (state) => {
         state.status = 'loading';
-        state.error = null;
+        state.booksArray = [];
+        state.filterBooks = [];
         state.mutEntities = [];
-        state.categories = [];
+        state.error = null;
       })
-      .addCase(fetchBooks.fulfilled, (state, action) => {
-        state.entities = action.payload;
-        if (state.categories && state.entities) {
+      .addCase(fetchBooks.fulfilled, (state, action: PayloadAction<BookType[]>) => {
+        const tempArrBooks = action.payload;
+
+        tempArrBooks.sort((a, b) => b.rating - a.rating);
+
+        state.booksArray = tempArrBooks;
+        state.filterBooks = tempArrBooks;
+
+        if (state.categories && state.booksArray) {
           state.mutEntities = state.categories.map((category) => ({
             ...category,
-            books: state.entities.filter((book) => book.categories.some((cat) => cat === category.name)),
+            books:
+              category.path === 'all'
+                ? state.booksArray
+                : state.booksArray.filter((book) => book.categories.some((cat) => cat === category.name)),
           }));
 
           if (state.mutEntities) {
-            state.status = 'idle';
             state.error = null;
-          } else{ state.error = new Error('Wrong data from api');
-          state.status = 'idle';
-        
-        }
+            state.status = 'idle';
+          } else {
+            state.error = new Error('Wrong data from api');
+            state.status = 'error';
+          }
         } else {
-          state.status = 'idle';
-
           state.error = new Error('Wrong data from api');
+          state.status = 'error';
         }
       })
       .addCase(fetchBooks.rejected, (state, action) => {
-        state.mutEntities = [];
-        state.categories = [];
         state.status = 'failed';
         state.error = action.error;
+        state.booksArray = [];
+        state.filterBooks = [];
       })
       .addCase(fetchCategories.pending, (state) => {
         state.status = 'loading';
         state.error = null;
         state.categories = [];
+        state.booksArray = [];
+        state.filterBooks = [];
       })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
+      .addCase(fetchCategories.fulfilled, (state, action: PayloadAction<CategoriesType[]>) => {
+        state.status = 'idle';
         state.error = null;
         state.categories = action.payload;
+        state.categories.unshift({
+          name: 'Все книги',
+          path: 'all',
+          id: state.categories.length + 1,
+        });
       })
       .addCase(fetchCategories.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.error;
         state.categories = [];
-        state.status = 'failed';
+        state.booksArray = [];
+        state.filterBooks = [];
       })
       .addCase(fetchBookById.pending, (state) => {
+        state.status = 'loading';
         state.error = null;
         state.book = null;
-        state.status = 'loading';
+        state.booksArray = [];
+        state.filterBooks = [];
       })
-      .addCase(fetchBookById.fulfilled, (state, action) => {
-        state.error = null;
+      .addCase(fetchBookById.fulfilled, (state, action: PayloadAction<BookType>) => {
         state.book = action.payload;
+        state.error = null;
         state.status = 'idle';
       })
       .addCase(fetchBookById.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.error;
         state.book = null;
-        state.status = 'failed';
+      })
+      .addCase(navSlice.actions.toggleDescending, (state, action: PayloadAction<boolean>) => {
+        if (action.payload) {
+          state.booksArray.sort((a, b) => a.rating - b.rating);
+          state.filterBooks.sort((a, b) => a.rating - b.rating);
+        } else {
+          state.filterBooks.sort((a, b) => b.rating - a.rating);
+          state.booksArray.sort((a, b) => b.rating - a.rating);
+        }
+      })
+      .addCase(navSlice.actions.setFilterBooks, (state, action: PayloadAction<string>) => {
+        state.filterBooks = state.booksArray.filter((book) =>
+          getFixString(book.title).indexOf(getFixString(action.payload)) === -1 ? false : true
+        );
       });
   },
 });

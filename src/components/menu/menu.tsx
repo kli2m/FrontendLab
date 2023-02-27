@@ -15,6 +15,7 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
   const isOpenBooksMenu = useSelector((state: RootState) => state.menu.isOpenBooks);
   const isOpenMenu = useSelector((state: RootState) => state.menu.isOpen);
   const mutEntities = useSelector((state: RootState) => state.books.mutEntities);
+
   const error = useSelector((state: RootState) => state.books.error);
 
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -71,25 +72,40 @@ export const Menu: React.FC<{ isHeader?: boolean }> = ({ isHeader = false }) => 
           Витрина книг
           <div className={classNames(classMenuActive, classOpenBooksMenu)}> </div>
         </NavLink>
-
         <ul className={`books-list ${classOpenBooksMenu}`}>
-          <NavLink
-            to={ROUTES_NAMES.ALL_BOOKS}
-            className={({ isActive }) => (isActive ? 'active books-list__title' : 'books-list__title')}
-            onClick={onHandleCloseMenu}
-            data-test-id={classNames(isOpenMenu ? 'burger-books' : 'navigation-books')}
-          >
-            Все книги
-          </NavLink>
           {mutEntities &&
-            mutEntities.map((categ, ind) => (
-              <li key={`${categ.name} ${ind + 1}`} className='books-list__item'>
-                <NavLink onClick={onHandleCloseMenu} to={`/books/${categ.path}`} className='books-list__item_link'>
-                  <span>{categ.name}</span>
+            mutEntities.map((categ, ind) =>
+              ind === 0 ? (
+                <NavLink
+                  key={`${categ.name} ${ind + 1}`}
+                  to={ROUTES_NAMES.ALL_BOOKS}
+                  className={({ isActive }) => (isActive ? 'active books-list__title' : 'books-list__title')}
+                  onClick={onHandleCloseMenu}
+                  data-test-id={classNames(isOpenMenu ? 'burger-books' : 'navigation-books')}
+                >
+                  {categ.name}
                 </NavLink>
-                <span className='books-list__item_count'>{categ.books.length}</span>
-              </li>
-            ))}
+              ) : (
+                <li key={`${categ.name} ${ind + 1}`} className='books-list__item'>
+                  <NavLink
+                    data-test-id={classNames(isOpenMenu ? `burger-${categ.path}` : `navigation-${categ.path}`)}
+                    onClick={onHandleCloseMenu}
+                    to={`/books/${categ.path}`}
+                    className='books-list__item_link'
+                  >
+                    <span>{categ.name}</span>
+                  </NavLink>
+                  <span
+                    className='books-list__item_count'
+                    data-test-id={classNames(
+                      isOpenMenu ? `burger-book-count-for-${categ.path}` : `navigation-book-count-for-${categ.path}`
+                    )}
+                  >
+                    {categ.books.length}
+                  </span>
+                </li>
+              )
+            )}
         </ul>
       </div>
       <div className={classNames('menu__other', classOpenBooksMenu)}>
