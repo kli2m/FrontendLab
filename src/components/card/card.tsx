@@ -21,9 +21,9 @@ const Hightlight = (str: string, filter: string): string | any => {
         const c = matchValue.shift();
 
         return (
-          <React.Fragment>
+          <React.Fragment key={`${s} ${index + 1}`}>
             {s}
-            <span className='hightlight' data-test-id='highlight-matches'>
+            <span  className='hightlight' data-test-id='highlight-matches'>
               {c}
             </span>
           </React.Fragment>
@@ -46,8 +46,8 @@ export const Card: React.FC<{ book: BookType; currentCategory: string }> = (prop
   const onHandleBook = () => {};
 
   return (
-    <section className={`card ${isTile ? 'tile' : 'list'}`}>
-      <NavLink data-test-id='card' to={`/books/${currentCategory}/${book.id}`}>
+    <section data-test-id='card' className={`card ${isTile ? 'tile' : 'list'}`}>
+      <NavLink to={`/books/${currentCategory}/${book.id}`}>
         {book.image ? (
           <img className='card__img' src={getPathImage(book.image.url)} loading='lazy' alt='img' />
         ) : (

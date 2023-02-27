@@ -53,7 +53,7 @@ export const Navigation: React.FC = () => {
   return (
     <section className='navigation'>
       <div className={classNames('navigation__split', classClickedSearch)}>
-        <div data-test-id='input-search' className={classNames('navigation__search', classClickedSearch)}>
+        <div  className={classNames('navigation__search', classClickedSearch)}>
           <input
             className={classNames('navigation__search_input', classClickedSearch)}
             type='search'
